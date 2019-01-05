@@ -1,2 +1,7 @@
-<!--pages/index/index.wxml-->
-<text>pages/index/index.wxml</text>
+<text>{{dateText}}</text>
+<view class="photo" bindtap='onTapPhoto'>
+  <image src="{{photoUrl}}"></image>
+</view>
+
+<button wx:if='{{hasUserInfo}}' bindtap='onTapSubmit'>{{submitButtonText}}</button>
+<button wx:else open-type='getUserInfo' bindgetuserinfo='onTapGetUserInfo'>{{submitButtonText}}</button>
