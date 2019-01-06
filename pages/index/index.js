@@ -10,8 +10,7 @@ Page({
    */
   data: {
     hasUserInfoScope: false,
-    dateText: '',
-    timeText: '',
+    datetimeText: '',
     location: null,
     locationLatitude: INIT_LATITUDE,
     locationLongitude: INIT_LONGITUDE,
@@ -25,7 +24,7 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-    this.setDateAndTimeText();
+    this.setDatetimeText();
     util.checkAuth('scope.userInfo')
       .then(result => {
         this.setData({
@@ -35,13 +34,12 @@ Page({
     // this.setInitLocation();
   },
 
-  setDateAndTimeText: function() {
+  setDatetimeText: function() {
     const d = new Date();
     let minute = d.getMinutes();
     if (minute < 10) minute = '0' + minute;
     this.setData({
-      dateText: `${d.getMonth() + 1}月${d.getDate()}日`,
-      timeText: `${d.getHours()}:${minute}`
+      datetimeText: `${d.getMonth() + 1}月${d.getDate()}日 ${d.getHours()}:${minute}`
     });
   },
 

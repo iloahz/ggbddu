@@ -7,7 +7,7 @@
   </view>
   <view class="datetime-container">
     <view class="datetime" bindtap='onTapDatetime'>
-      <text class="date-text">{{dateText}}</text>
+      <text class="datetime-text">{{datetimeText}}</text>
     </view>
   </view>
   <view class="photo-container">

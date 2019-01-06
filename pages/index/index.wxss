@@ -115,7 +115,7 @@ page {
   font-size: 14px;
 }
 
-.date-text {
+.datetime-text {
   padding: 2px;
   border-radius: 3px;
   background-color: #dddddd;
