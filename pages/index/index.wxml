@@ -1,5 +1,6 @@
-<view>
-<text>{{dateText}}</text>
+<view class="datetime">
+<text class="date">{{dateText}}</text>
+<text class="time">{{timeText}}</text>
 </view>
 <view>
 <text bindtap='onTapLocation'>我在{{locationText}}</text>

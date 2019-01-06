@@ -8,6 +8,7 @@ Page({
   data: {
     hasUserInfoScope: false,
     dateText: '',
+    timeText: '',
     location: null,
     locationText: '',
     photoUrl: '/images/placeholder.png',
@@ -18,21 +19,26 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-    const d = new Date();
-    this.setData({
-      dateText: `今天是${d.getMonth() + 1}月${d.getDate()}日`
-    });
+    this.setDateAndTimeText();
     util.checkAuth('scope.userInfo')
       .then(result => {
         this.setData({
           hasUserInfoScope: result
         });
       });
-    // this.fillDefaultLocation();
+    // this.setInitLocation();
+  },
+
+  setDateAndTimeText: function() {
+    const d = new Date();
+    this.setData({
+      dateText: `${d.getMonth() + 1}月${d.getDate()}日`,
+      timeText: `${d.getHours()}:${d.getMinutes()}`
+    });
   },
 
   // Try to fill location without letting user choose.
-  fillDefaultLocation: function() {
+  setInitLocation: function() {
     util.mustHaveAuth('scope.userLocation')
       .then(() => {
         return util.getLocation({ type: 'gcj02' });
