@@ -10,9 +10,9 @@ Page({
     dateText: '',
     timeText: '',
     location: null,
-    locationText: '',
+    locationText: '万柳海淀区纪检委(长春桥路北)',
     photoUrl: '/images/placeholder.png',
-    submitButtonText: '吃早饭咯！'
+    submitButtonText: '吃早饭咯~'
   },
 
   /**
@@ -31,9 +31,11 @@ Page({
 
   setDateAndTimeText: function() {
     const d = new Date();
+    let minute = d.getMinutes();
+    if (minute < 10) minute = '0' + minute;
     this.setData({
       dateText: `${d.getMonth() + 1}月${d.getDate()}日`,
-      timeText: `${d.getHours()}:${d.getMinutes()}`
+      timeText: `${d.getHours()}:${minute}`
     });
   },
 
