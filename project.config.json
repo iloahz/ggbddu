@@ -35,5 +35,7 @@
 			"current": -1,
 			"list": []
 		}
-	}
+	},
+  "miniprogramRoot": "./client/",
+  "cloudfunctionRoot": "./cloud/"
 }

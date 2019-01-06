@@ -92,9 +92,8 @@ Page({
   },
 
   onTapSubmit: function(e) {
-    console.log(this.data);
-    util.getUserInfo()
-      .then(console.log);
+    wx.cloud.callFunction({
+    });
   },
 
   onTapGetUserInfo: function(e) {
