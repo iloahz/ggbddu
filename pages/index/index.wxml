@@ -1,4 +1,9 @@
+<view>
 <text>{{dateText}}</text>
+</view>
+<view>
+<text bindtap='onTapLocation'>我在{{locationText}}</text>
+</view>
 <view class="photo" bindtap='onTapPhoto'>
   <image src="{{photoUrl}}"></image>
 </view>

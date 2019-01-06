@@ -8,6 +8,8 @@ Page({
   data: {
     hasUserInfo: true,
     dateText: '',
+    location: null,
+    locationText: '',
     photoUrl: '/images/placeholder.png',
     submitButtonText: '吃早饭咯！'
   },
@@ -26,6 +28,18 @@ Page({
           hasUserInfo: hasUserInfo
         })
       })
+  },
+
+  onTapLocation: function(e) {
+    wx.chooseLocation({
+      success: (res) => {
+        console.log(res);
+        this.setData({
+          location: res,
+          locationText: res.name
+        });
+      },
+    });
   },
 
   onTapPhoto: function(e) {
