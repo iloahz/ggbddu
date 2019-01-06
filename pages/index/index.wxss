@@ -15,6 +15,11 @@ page {
   margin-bottom: 6px;
 }
 
+.datetime-container {
+  height: 20px;
+  margin-bottom: 6px;
+}
+
 .photo-container {
   width: 100%;
   height: 30%;
@@ -35,6 +40,11 @@ page {
 
 .note {
   font-size: 1em;
+  height: 100%;
+}
+
+.note-textarea {
+  height: 100%;
 }
 
 .placeholder {
@@ -100,4 +110,14 @@ page {
 .add-photo-image {
   width: 48px;
   height: 48px;
+}
+
+.datetime {
+  font-size: 14px;
+}
+
+.date-text {
+  padding: 2px;
+  border-radius: 3px;
+  background-color: #dddddd;
 }

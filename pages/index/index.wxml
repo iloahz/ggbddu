@@ -1,8 +1,13 @@
 <view class="container">
   <view class="note-container">
     <view class="note">
-      <textarea placeholder='这一刻的想法...' placeholder-class='placeholder' focus='true'>
+      <textarea class="note-textarea" placeholder='这一刻的想法...' placeholder-class='placeholder' focus='true'>
       </textarea>
+    </view>
+  </view>
+  <view class="datetime-container">
+    <view class="datetime" bindtap='onTapDatetime'>
+      <text class="date-text">{{dateText}}</text>
     </view>
   </view>
   <view class="photo-container">

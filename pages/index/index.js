@@ -56,6 +56,14 @@ Page({
       });
   },
 
+  onTapDatetime: function(e) {
+    util.showToast({
+      title: '暂不允许修改时间，请即时记录。',
+      icon: 'none',
+      duration: 1500
+    });
+  },
+
   onTapLocation: function(e) {
     util.chooseLocation()
       .then(result => {
