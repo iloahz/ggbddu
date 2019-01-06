@@ -24,7 +24,7 @@ function checkAuth(scope) {
 }
 
 function ensureAuth(scope) {
-  return ifHasAuth(scope).catch(authorize);
+  return mustHaveAuth(scope).catch(authorize);
 }
 
 function getUserInfo(options) {

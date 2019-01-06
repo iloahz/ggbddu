@@ -1,4 +1,7 @@
-import util from '../../base/util.js'
+import util from '../../base/util.js';
+
+const INIT_LATITUDE = 39.908823;
+const INIT_LONGITUDE = 116.39747;
 
 Page({
 
@@ -10,7 +13,10 @@ Page({
     dateText: '',
     timeText: '',
     location: null,
-    locationText: '万柳海淀区纪检委(长春桥路北)',
+    locationLatitude: INIT_LATITUDE,
+    locationLongitude: INIT_LONGITUDE,
+    locationMarkers: [],
+    locationText: '',
     photoUrl: '',
     submitButtonText: '吃早饭咯~'
   },
@@ -51,15 +57,23 @@ Page({
   },
 
   onTapLocation: function(e) {
-    wx.chooseLocation({
-      success: (res) => {
-        console.log(res);
+    util.chooseLocation()
+      .then(result => {
+        console.log(result);
         this.setData({
-          location: res,
-          locationText: res.name
+          location: result,
+          locationText: result.name,
+          locationLatitude: result.latitude,
+          locationLongitude: result.longitude,
+          locationMarkers: [{
+            id: 0,
+            latitude: result.latitude,
+            longitude: result.longitude,
+            title: 'fdafsd',
+            iconPath: '/images/location_marker.png'
+          }]
         });
-      },
-    });
+      });
   },
 
   onTapPhoto: function(e) {
@@ -72,8 +86,9 @@ Page({
   },
 
   onTapSubmit: function(e) {
+    console.log(this.data);
     util.getUserInfo()
-      .then(console.log)
+      .then(console.log);
   },
 
   onTapGetUserInfo: function(e) {
