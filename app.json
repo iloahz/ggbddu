@@ -2,5 +2,35 @@
   "pages": [
     "pages/index/index"
   ],
+  "tabBar": {
+    "color": "#696969",
+    "selectedColor": "#000000",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "记录",
+        "iconPath": "images/index.png",
+        "selectedIconPath": "images/index_selected.png"
+      },
+      {
+        "pagePath": "pages/index/index",
+        "text": "统计",
+        "iconPath": "images/stat.png",
+        "selectedIconPath": "images/stat_selected.png"
+      },
+      {
+        "pagePath": "pages/index/index",
+        "text": "发现",
+        "iconPath": "images/explore.png",
+        "selectedIconPath": "images/explore_selected.png"
+      },
+      {
+        "pagePath": "pages/index/index",
+        "text": "我",
+        "iconPath": "images/me.png",
+        "selectedIconPath": "images/me_selected.png"
+      }
+    ]
+  },
   "debug": true
 }
