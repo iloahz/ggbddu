@@ -4,6 +4,7 @@ const authorize = promisify(wx.authorize);
 const getSetting = promisify(wx.getSetting);
 const getLocation = promisify(wx.getLocation);
 const chooseLocation = promisify(wx.chooseLocation);
+const chooseImage = promisify(wx.chooseImage);
 
 function mustHaveAuth(scope) {
   return getSetting()
@@ -44,6 +45,7 @@ export default {
   getUserInfo,
   getLocation,
   chooseLocation,
+  chooseImage,
 
   // helper functions
   mustHaveAuth,

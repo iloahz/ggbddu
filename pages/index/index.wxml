@@ -1,23 +1,30 @@
-<view class="datetime">
-  <text class="date">{{dateText}}</text>
-  <text class="time">{{timeText}}</text>
-</view>
-
-<view class="note">
-  <textarea placeholder='这一刻在吃啥...' placeholder-class='placeholder' focus='true'>
-  </textarea>
-</view>
-
-<view class="location">
-  <view class="map">
-    <map bindtap='onTapLocation'></map>
+<view class="container">
+  <view class="note-container">
+    <view class="note">
+      <textarea placeholder='这一刻的想法...' placeholder-class='placeholder' focus='true'>
+      </textarea>
+    </view>
   </view>
-  <text class="location-text">{{locationText}}</text>
+  <view class="photo-container">
+    <view class="photo" bindtap='onTapPhoto'>
+      <view wx:if="{{photoUrl}}" class="user-photo">
+        <image class="user-photo-image" src="{{photoUrl}}" mode="aspectFill"></image>
+      </view>
+      <view wx:else class="add-photo">
+        <image class="add-photo-image" src="/images/add_photo.png" mode="aspectFit"></image>
+      </view>
+    </view>
+  </view>
+  <view class="location-container">
+    <view class="location">
+      <view class="map">
+        <map bindtap='onTapLocation'></map>
+      </view>
+      <text class="location-text">{{locationText}}</text>
+    </view>
+  </view>
+  <view class="commit-container">
+    <button wx:if='{{hasUserInfoScope}}' bindtap='onTapSubmit' type="primary">{{submitButtonText}}</button>
+    <button wx:else open-type='getUserInfo' bindgetuserinfo='onTapGetUserInfo'>{{submitButtonText}}</button>
+  </view>
 </view>
-
-<view class="photo" bindtap='onTapPhoto'>
-  <image src="{{photoUrl}}"></image>
-</view>
-
-<button wx:if='{{hasUserInfoScope}}' bindtap='onTapSubmit' type="primary">{{submitButtonText}}</button>
-<button wx:else open-type='getUserInfo' bindgetuserinfo='onTapGetUserInfo'>{{submitButtonText}}</button>

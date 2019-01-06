@@ -11,7 +11,7 @@ Page({
     timeText: '',
     location: null,
     locationText: '万柳海淀区纪检委(长春桥路北)',
-    photoUrl: '/images/placeholder.png',
+    photoUrl: '',
     submitButtonText: '吃早饭咯~'
   },
 
@@ -63,13 +63,12 @@ Page({
   },
 
   onTapPhoto: function(e) {
-    wx.chooseImage({
-      success: (res) => {
+    util.chooseImage({count: 1})
+      .then(result => {
         this.setData({
-          photoUrl: res.tempFilePaths[0]
-        })
-      },
-    })
+          photoUrl: result.tempFilePaths[0]
+        });
+      });
   },
 
   onTapSubmit: function(e) {
