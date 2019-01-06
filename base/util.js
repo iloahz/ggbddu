@@ -1,38 +1,22 @@
-function getSetting() {
-  return new Promise((resolve, reject) => {
-    wx.getSetting({
-      success: resolve,
-      fail: reject
-    })
-  })
-}
+import promisify from './promisify.js';
+
+const getSetting = promisify(wx.getSetting);
+const authorize = promisify(wx.authorize);
 
 function hasAuth(scope) {
   return getSetting()
     .then(res => {
       return !!res.authSetting[scope]
-    })
-}
-
-function authorize(scope) {
-  console.log('authorize: ', scope)
-  return new Promise((resolve, reject) => {
-    wx.authorize({
-      scope: scope,
-      success: resolve,
-      fail: reject
-    })
-  })
+    });
 }
 
 function ensureAuth(scope) {
-  return getSetting()
-    .then(res => {
-      console.log(res)
-      if (!res.authSetting[scope]) {
-        return authorize(scope)
+  return hasAuth(scope)
+    .then(has => {
+      if (!has) {
+        return authorize(scope);
       }
-    })
+    });
 }
 
 function getUserInfo(options) {
