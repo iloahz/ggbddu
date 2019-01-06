@@ -1,5 +1,6 @@
 page {
-  height: 100%;
+  /* use 96% to avoid scroll */
+  height: 96%;
 }
 
 .container {
@@ -61,8 +62,6 @@ page {
 .map {
   width: 100%;
   height: calc(100% - 20px);
-  border-radius: 6px;
-  overflow: hidden;
 }
 
 .map > map {
