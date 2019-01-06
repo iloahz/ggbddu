@@ -6,7 +6,7 @@ Page({
    * Page initial data
    */
   data: {
-    hasUserInfo: true,
+    hasUserInfoScope: false,
     dateText: '',
     location: null,
     locationText: '',
@@ -21,13 +21,25 @@ Page({
     const d = new Date();
     this.setData({
       dateText: `今天是${d.getMonth() + 1}月${d.getDate()}日`
-    })
-    util.hasAuth('scope.userInfo')
-      .then(hasUserInfo => {
+    });
+    util.checkAuth('scope.userInfo')
+      .then(result => {
         this.setData({
-          hasUserInfo: hasUserInfo
-        })
+          hasUserInfoScope: result
+        });
+      });
+    // this.fillDefaultLocation();
+  },
+
+  // Try to fill location without letting user choose.
+  fillDefaultLocation: function() {
+    util.mustHaveAuth('scope.userLocation')
+      .then(() => {
+        return util.getLocation({ type: 'gcj02' });
       })
+      .then(result => {
+        console.log(result);
+      });
   },
 
   onTapLocation: function(e) {

@@ -1,22 +1,29 @@
 import promisify from './promisify.js';
 
-const getSetting = promisify(wx.getSetting);
 const authorize = promisify(wx.authorize);
+const getSetting = promisify(wx.getSetting);
+const getLocation = promisify(wx.getLocation);
+const chooseLocation = promisify(wx.chooseLocation);
 
-function hasAuth(scope) {
+function mustHaveAuth(scope) {
   return getSetting()
     .then(res => {
-      return !!res.authSetting[scope]
+      if (!res.authSetting[scope]) {
+        throw scope;
+      }
+      return scope;
+    });
+}
+
+function checkAuth(scope) {
+  return getSetting()
+    .then(res => {
+      return !!res.authSetting[scope];
     });
 }
 
 function ensureAuth(scope) {
-  return hasAuth(scope)
-    .then(has => {
-      if (!has) {
-        return authorize(scope);
-      }
-    });
+  return ifHasAuth(scope).catch(authorize);
 }
 
 function getUserInfo(options) {
@@ -32,4 +39,13 @@ function getUserInfo(options) {
     })
 }
 
-export default {getUserInfo, hasAuth}
+export default {
+  // wrappers for wx. functions
+  getUserInfo,
+  getLocation,
+  chooseLocation,
+
+  // helper functions
+  mustHaveAuth,
+  checkAuth
+};
