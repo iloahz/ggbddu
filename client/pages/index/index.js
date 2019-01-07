@@ -31,7 +31,8 @@ Page({
           hasUserInfoScope: result
         });
       });
-    // this.setInitLocation();
+    this.setInitLocation();
+    util.getOpenId();
   },
 
   setDatetimeText: function() {
@@ -51,7 +52,8 @@ Page({
       })
       .then(result => {
         console.log(result);
-      });
+      })
+      .catch(console.log);
   },
 
   onTapDatetime: function(e) {
@@ -91,9 +93,21 @@ Page({
       });
   },
 
+  uploadPhotoIfExist: function() {
+    if (!this.data.photoUrl) return Promise.resolve();
+    return util.getOpenId()
+      .then(openId => {
+        console.log(openId);
+        return wx.cloud.uploadFile({
+          cloudPath: 'my-photo.png',
+          filePath: this.data.photoUrl,
+        });
+      });
+  },
+
   onTapSubmit: function(e) {
-    wx.cloud.callFunction({
-    });
+    this.uploadPhotoIfExist()
+      .then(console.log);
   },
 
   onTapGetUserInfo: function(e) {

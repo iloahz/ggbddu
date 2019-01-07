@@ -1,4 +1,5 @@
 import promisify from './promisify.js';
+import gg from './gg.js';
 
 const authorize = promisify(wx.authorize);
 const getSetting = promisify(wx.getSetting);
@@ -42,6 +43,17 @@ function getUserInfo(options) {
     })
 }
 
+function getOpenId() {
+  if (gg.openId) return Promise.resolve(gg.openId);
+  return wx.cloud.callFunction({
+    name: 'getInitInfo',
+    data: {}
+  })
+    .then(result => {
+      return gg.openId = result['result']['openid'];
+    });
+}
+
 export default {
   // wrappers for wx. functions
   getUserInfo,
@@ -53,5 +65,6 @@ export default {
 
   // helper functions
   mustHaveAuth,
-  checkAuth
+  checkAuth,
+  getOpenId
 };
