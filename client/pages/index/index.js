@@ -1,5 +1,6 @@
 import util from '../../base/util.js';
 import db from '../../database/db.js';
+import TOAST from '../../constant/toast.js';
 
 const INIT_LATITUDE = 39.908823;
 const INIT_LONGITUDE = 116.39747;
@@ -60,11 +61,7 @@ Page({
   },
 
   onTapDatetime: function(e) {
-    util.showToast({
-      title: '暂不允许修改时间，请即时记录。',
-      icon: 'none',
-      duration: 1500
-    });
+    util.showToast(TOAST.NO_MODIFY_DATE);
   },
 
   onTapLocation: function(e) {
@@ -132,33 +129,13 @@ Page({
   },
 
   onTapSubmit: function(e) {
-    const uploadPhotoToastOption = {
-      title: '正在上传照片',
-      icon: 'loading',
-      duration: 666666
-    };
-    const uploadRecordToastOption = {
-      title: '正在上传记录',
-      icon: 'loading',
-      duration: 666666
-    };
-    const successToastOption = {
-      title: '记录成功！',
-      icon: 'success',
-      duration: 1000
-    };
-    const errorToastOption = {
-      title: '抱歉，出了一点状况，请稍后再试。',
-      icon: 'none',
-      duration: 1000
-    };
     Promise.resolve()
-      .then(() => util.showToast(uploadPhotoToastOption))
+      .then(() => util.showToast(TOAST.UPLOADING_PHOTO))
       .then(() => this.uploadPhotoIfExist())
-      .then(() => util.showToast(uploadRecordToastOption))
+      .then(() => util.showToast(TOAST.UPLOADING_RECORD))
       .then(() => this.uploadRecord())
-      .then(() => util.showToast(successToastOption))
-      .catch(() => util.showToast(errorToastOption));
+      .then(() => util.showToast(TOAST.UPLOAD_SUCCESS))
+      .catch(() => util.showToast(TOAST.UPLOAD_ERROR));
   },
 
   onTapGetUserInfo: function(e) {
