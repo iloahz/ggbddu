@@ -1,6 +1,9 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/index/index",
+    "pages/stat/stat",
+    "pages/me/me",
+    "pages/explore/explore"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ffffff",
@@ -21,19 +24,19 @@
         "selectedIconPath": "images/index_selected.png"
       },
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/stat/stat",
         "text": "统计",
         "iconPath": "images/stat.png",
         "selectedIconPath": "images/stat_selected.png"
       },
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/explore/explore",
         "text": "发现",
         "iconPath": "images/explore.png",
         "selectedIconPath": "images/explore_selected.png"
       },
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/me/me",
         "text": "我",
         "iconPath": "images/me.png",
         "selectedIconPath": "images/me_selected.png"
