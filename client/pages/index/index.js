@@ -77,8 +77,9 @@ Page({
             id: 0,
             latitude: result.latitude,
             longitude: result.longitude,
-            title: 'fdafsd',
-            iconPath: '/images/location_marker.png'
+            iconPath: '/images/location_marker.png',
+            width: 36,
+            height: 36
           }]
         });
       });
