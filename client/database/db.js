@@ -44,10 +44,13 @@ function addOrUpdateRecord(datetime, note, photo, longitude, latitude, locationN
   return getRecords({ dateString })
     .then(result => {
       if (result.length > 0) {
-        return records.doc(result[0]['_id']).set(data);
-      } else {
-        return records.add(data);
+        // doc.set will lose timezone info, so use remove for now.
+        // https://developers.weixin.qq.com/community/develop/doc/00026211d60bb870eee789e9656000
+        return records.doc(result[0]['_id']).remove();
       }
+    })
+    .then(() => {
+      return records.add(data);
     });
 }
 
