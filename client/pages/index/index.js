@@ -16,9 +16,10 @@ Page({
     locationLongitude: INIT_LONGITUDE,
     locationMarkers: [],
     locationText: '',
-    photoUrl: '',
-    submitButtonText: '吃早饭咯~'
+    photoUrl: ''
   },
+
+  cloudPhotoUrl: '',
 
   /**
    * Lifecycle function--Called when page load
@@ -94,21 +95,55 @@ Page({
       });
   },
 
-  uploadPhotoIfExist: function() {
-    if (!this.data.photoUrl) return Promise.resolve();
+  getCloudPhotoPath: function() {
     return util.getOpenId()
       .then(openId => {
-        console.log(openId);
-        return wx.cloud.uploadFile({
-          cloudPath: 'my-photo.png',
-          filePath: this.data.photoUrl,
-        });
+        const d = new Date();
+        const fileExtension = this.data.photoUrl.substr(this.data.photoUrl.lastIndexOf('.'));
+        return `photos/${openId}/${d.getFullYear()}.${d.getMonth() + 1}/${d.getDate()}${fileExtension}`;
       });
   },
 
+  uploadPhotoIfExist: function() {
+    if (!this.data.photoUrl) return Promise.resolve();
+    return this.getCloudPhotoPath()
+      .then(cloudPhotoPath => {
+        return wx.cloud.uploadFile({
+          cloudPath: cloudPhotoPath,
+          filePath: this.data.photoUrl
+        });
+      })
+      .then(result => {
+        this.cloudPhotoUrl = result['fileID'];
+      });
+  },
+
+  uploadRecord: function() {
+    return util.timeout(3000);
+  },
+
   onTapSubmit: function(e) {
-    this.uploadPhotoIfExist()
-      .then(console.log);
+    const uploadPhotoToastOption = {
+      title: '正在上传照片',
+      icon: 'loading',
+      duration: 666666
+    };
+    const uploadRecordToastOption = {
+      title: '正在上传记录',
+      icon: 'loading',
+      duration: 666666
+    };
+    const successToastOption = {
+      title: '记录成功！',
+      icon: 'success',
+      duration: 1000
+    };
+    Promise.resolve()
+      .then(() => util.showToast(uploadPhotoToastOption))
+      .then(() => this.uploadPhotoIfExist())
+      .then(() => util.showToast(uploadRecordToastOption))
+      .then(() => this.uploadRecord())
+      .then(() => util.showToast(successToastOption));
   },
 
   onTapGetUserInfo: function(e) {

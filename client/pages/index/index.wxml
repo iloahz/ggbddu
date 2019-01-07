@@ -1,7 +1,7 @@
 <view class="container">
   <view class="note-container">
     <view class="note">
-      <textarea class="note-textarea" placeholder='这一刻的想法...' placeholder-class='placeholder' focus='true'>
+      <textarea class="note-textarea" placeholder='这一刻的想法...' placeholder-class='placeholder'>
       </textarea>
     </view>
   </view>
@@ -33,7 +33,7 @@
     </view>
   </view>
   <view class="commit-container">
-    <button wx:if='{{hasUserInfoScope}}' bindtap='onTapSubmit' type="primary">{{submitButtonText}}</button>
-    <button wx:else open-type='getUserInfo' bindgetuserinfo='onTapGetUserInfo'>{{submitButtonText}}</button>
+    <button wx:if='{{hasUserInfoScope}}' bindtap='onTapSubmit' type="primary">吃早饭咯~</button>
+    <button wx:else open-type='getUserInfo' bindgetuserinfo='onTapGetUserInfo' type="primary">吃早饭咯~</button>
   </view>
 </view>

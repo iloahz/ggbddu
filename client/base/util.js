@@ -54,6 +54,12 @@ function getOpenId() {
     });
 }
 
+function timeout(ms) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+}
+
 export default {
   // wrappers for wx. functions
   getUserInfo,
@@ -66,5 +72,6 @@ export default {
   // helper functions
   mustHaveAuth,
   checkAuth,
-  getOpenId
+  getOpenId,
+  timeout
 };
