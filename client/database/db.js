@@ -27,7 +27,10 @@ function getRecords(filters) {
  * @param {string} locationName
  */
 function addOrUpdateRecord(datetime, note, photo, longitude, latitude, locationName) {
-  const dateString = datetime.toISOString().substr(0, 10);
+  const yyyy = datetime.getFullYear();
+  const mm = String(datetime.getMonth() + 1).padStart(2, '0');
+  const dd = String(datetime.getDate()).padStart(2, '0');
+  const dateString = `${yyyy}-${mm}-${dd}`;
   const data = {
     data: {
       datetime: datetime,
@@ -43,7 +46,7 @@ function addOrUpdateRecord(datetime, note, photo, longitude, latitude, locationN
       if (result.length > 0) {
         return records.doc(result[0]['_id']).set(data);
       } else {
-        return result.add(data);
+        return records.add(data);
       }
     });
 }

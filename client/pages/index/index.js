@@ -135,7 +135,10 @@ Page({
       .then(() => util.showToast(TOAST.UPLOADING_RECORD))
       .then(() => this.uploadRecord())
       .then(() => util.showToast(TOAST.UPLOAD_SUCCESS))
-      .catch(() => util.showToast(TOAST.UPLOAD_ERROR));
+      .catch(e => {
+        console.log(e);
+        util.showToast(TOAST.UPLOAD_ERROR)
+      });
   },
 
   onTapGetUserInfo: function(e) {
