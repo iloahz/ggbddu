@@ -1,4 +1,5 @@
 import util from '../../base/util.js';
+import db from '../../database/db.js';
 
 const INIT_LATITUDE = 39.908823;
 const INIT_LONGITUDE = 116.39747;
@@ -19,6 +20,7 @@ Page({
     photoUrl: ''
   },
 
+  datetime: null,
   cloudPhotoUrl: '',
 
   /**
@@ -37,7 +39,7 @@ Page({
   },
 
   setDatetimeText: function() {
-    const d = new Date();
+    const d = this.date = new Date();
     let minute = d.getMinutes();
     if (minute < 10) minute = '0' + minute;
     this.setData({
@@ -119,7 +121,14 @@ Page({
   },
 
   uploadRecord: function() {
-    return util.timeout(3000);
+    return db.addOrUpdateRecord(
+      this.date,
+      '',
+      this.cloudPhotoUrl,
+      this.data.locationLongitude,
+      this.data.locationLatitude,
+      this.data.locationText
+    );
   },
 
   onTapSubmit: function(e) {
@@ -138,12 +147,18 @@ Page({
       icon: 'success',
       duration: 1000
     };
+    const errorToastOption = {
+      title: '抱歉，出了一点状况，请稍后再试。',
+      icon: 'none',
+      duration: 1000
+    };
     Promise.resolve()
       .then(() => util.showToast(uploadPhotoToastOption))
       .then(() => this.uploadPhotoIfExist())
       .then(() => util.showToast(uploadRecordToastOption))
       .then(() => this.uploadRecord())
-      .then(() => util.showToast(successToastOption));
+      .then(() => util.showToast(successToastOption))
+      .catch(() => util.showToast(errorToastOption));
   },
 
   onTapGetUserInfo: function(e) {
