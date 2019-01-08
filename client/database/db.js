@@ -18,6 +18,22 @@ function getRecords(filters) {
     });
 }
 
+function getStatOfCurrentYear() {
+  const year = new Date().getFullYear();
+  return wx.cloud.callFunction({
+    name: 'getStat',
+    data: { year: year }
+  })
+    .then(result => {
+      return result['result'].map(record => {
+        return {
+          datetime: new Date(record.datetime)
+        }
+      });
+    })
+    .catch(console.log);
+}
+
 /**
  * @param {Date} datetime
  * @param {string} note
@@ -56,5 +72,6 @@ function addOrUpdateRecord(datetime, note, photo, longitude, latitude, locationN
 
 export default {
   getRecords,
-  addOrUpdateRecord
+  addOrUpdateRecord,
+  getStatOfCurrentYear
 };

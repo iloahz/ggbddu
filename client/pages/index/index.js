@@ -40,11 +40,13 @@ Page({
   },
 
   setDatetimeText: function() {
-    const d = this.date = new Date();
-    let minute = d.getMinutes();
-    if (minute < 10) minute = '0' + minute;
+    this.date = new Date();
+    const mm = this.date.getMonth() + 1;
+    const dd = this.date.getDate();
+    const hh = this.date.getHours();
+    const minute = String(this.date.getMinutes()).padStart(2, '0');
     this.setData({
-      datetimeText: `${d.getMonth() + 1}月${d.getDate()}日 ${d.getHours()}:${minute}`
+      datetimeText: `${mm}月${dd}日 ${hh}:${minute}`
     });
   },
 
