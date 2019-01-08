@@ -64,7 +64,7 @@ Page({
   createStars: function() {
     const d = new Date();
     const currentYear = d.getFullYear();
-    const currentMonth = d.getMonth() + 6;
+    const currentMonth = d.getMonth();
     const currentDate = d.getDate();
     const months = [];
     let nextRecordIndex = 0;
