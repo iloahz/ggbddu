@@ -1,8 +1,20 @@
 <view class="container">
-  <view class="stars-container">
-    <view class="stars">
-      <view wx:for="{{stars}}" wx:key="{{index}}" class="star-container">
-        <view class="star {{item.cssClass}}"></view>
+  <view class="header-container">
+    <view class="days">
+      <view class="day" wx:for="{{dayNames}}" wx:key="{{index}}">{{item}}</view>
+    </view>
+  </view>
+  <view class="content-container">
+    <view class="months-container">
+      <view class="month-container" wx:for="{{months}}" wx:key="{{index}}">
+        <view class="month-name-container">
+          <view class="month-name">{{item.name}}</view>
+        </view>
+        <view class="stars-container">
+          <view class="star-container" wx:for="{{item.stars}}" wx:key="{{index}}">
+            <view class="star {{item.cssClass}}"></view>
+          </view>
+        </view>
       </view>
     </view>
   </view>

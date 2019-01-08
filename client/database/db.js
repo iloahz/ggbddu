@@ -55,5 +55,6 @@ function addOrUpdateRecord(datetime, note, photo, longitude, latitude, locationN
 }
 
 export default {
+  getRecords,
   addOrUpdateRecord
 };
