@@ -1,1 +1,63 @@
-/* client/pages/stat/stat.wxss */
+page {
+  width: 100%;
+  height: 100%;
+  --star-container-size: 40px;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.stars-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.stars {
+  display: flex;
+  flex-wrap: wrap;
+  width: 280px;
+}
+
+.star-container {
+  display: flex;
+  width: var(--star-container-size);
+  height: var(--star-container-size);
+  /* height: 10px; */
+}
+
+.star {
+  width: 90%;
+  height: 90%;
+}
+
+.star.didnt {
+  background: #ebedf0;
+}
+
+.star.pretty-early {
+  background: #c6e48b;
+}
+
+.star.early {
+  background: #7bc96f;
+}
+
+.star.normal {
+  background: #239a3b;
+}
+
+.star.late {
+  background: #196127;
+}
+
+.star.pretty-late {
+  background: #ebedf0;
+}
+
+.star.future-date {
+  background: #fbfbfb;
+}

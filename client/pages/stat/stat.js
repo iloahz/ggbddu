@@ -1,66 +1,64 @@
-// client/pages/stat/stat.js
+import constant from '../../constant/constant.js';
+
+const Level = {
+  Didnt:        0,
+  PrettyEarly:  1,
+  Early:        2,
+  Normal:       3,
+  Late:         4,
+  PrettyLate:   5,
+  FutureDate:   6
+};
+
+const LevelCssClass = [
+  'didnt',
+  'pretty-early',
+  'early',
+  'normal',
+  'late',
+  'pretty-late',
+  'future-date'
+];
+
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    records: [],
+    stars: []
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  loadRecords: function() {
+    return Promise.resolve();
+  },
+
+  createStars: function() {
+    const sortedRecords = [].concat(this.data.records).sort((a, b) => a.dateString < b.dateString);
+    const stars = [];
+    const d = new Date();
+    const currentMonth = d.getMonth() + 2;
+    const currentDate = d.getDate();
+    for (let mm = 0;mm < 12;mm++) {
+      for (let dd = 0;dd < constant.DAYS_IN_MONTH[mm];dd++) {
+        let level = Math.floor(Math.random() * 6);
+        if (mm > currentMonth || (mm == currentMonth && dd >= currentDate)) {
+          level = Level.FutureDate;
+        }
+        stars.push({
+          cssClass: LevelCssClass[level]
+        });
+      }
+    }
+    this.setData({
+      stars: stars
+    });
+  },
+
   onLoad: function (options) {
-
+    this.loadRecords()
+      .then(() => this.createStars());
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
 
   }
 })
