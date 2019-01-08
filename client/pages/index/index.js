@@ -57,7 +57,6 @@ Page({
         return util.getLocation({ type: 'gcj02' });
       })
       .then(result => {
-        console.log(result);
       })
       .catch(console.log);
   },

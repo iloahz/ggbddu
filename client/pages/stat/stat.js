@@ -88,7 +88,6 @@ Page({
           if (nextRecordIndex >= this.stat.length) {
             level = Level.Didnt;
           } else {
-            console.log(this.stat, nextRecordIndex, this.stat[nextRecordIndex]);
             let nextRecordDate = this.stat[nextRecordIndex].datetime;
             while (cmpPair(mm, dd, nextRecordDate.getMonth(), nextRecordDate.getDate()) > 0) {
               nextRecordIndex += 1;
