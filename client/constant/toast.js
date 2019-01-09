@@ -28,10 +28,24 @@ const UPLOAD_ERROR = {
   duration: 1000
 };
 
+const STAT_PULLDOWN_REFRESH_SUCCESS = {
+  title: '更新成功！',
+  icon: 'success',
+  duration: 1000
+};
+
+const STAT_PULLDOWN_REFRESH_ERROR = {
+  title: '获取数据失败，请稍后重试。',
+  icon: 'none',
+  duration: 1000
+};
+
 export default {
   NO_MODIFY_DATE,
   UPLOADING_PHOTO,
   UPLOADING_RECORD,
   UPLOAD_SUCCESS,
-  UPLOAD_ERROR
+  UPLOAD_ERROR,
+  STAT_PULLDOWN_REFRESH_SUCCESS,
+  STAT_PULLDOWN_REFRESH_ERROR
 }

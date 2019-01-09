@@ -1,4 +1,6 @@
-import constant from '../../constant/constant.js';
+import CONSTANT from '../../constant/constant.js';
+import TOAST from '../../constant/toast.js';
+import util from '../../base/util.js';
 import db from '../../database/db.js';
 
 const Level = {
@@ -48,7 +50,7 @@ function datetimeToLevel(datetime) {
 Page({
 
   data: {
-    dayNames: constant.DAY_NAME,
+    dayNames: CONSTANT.DAY_NAME,
     months: []
   },
 
@@ -70,7 +72,7 @@ Page({
     let nextRecordIndex = 0;
     for (let mm = 0; mm < 12; mm++) {
       const month = {
-        name: constant.MONTH_NAME[mm],
+        name: CONSTANT.MONTH_NAME[mm],
         stars: []
       };
       const monthFirstDay = new Date(currentYear, mm, 1).getDay();
@@ -79,7 +81,7 @@ Page({
         month.stars.push(EmptyStar);
         currentDay = currentDay < 6 ? currentDay + 1 : 0;
       }
-      for (let dd = 1; dd <= constant.DAYS_IN_MONTH[mm]; dd++) {
+      for (let dd = 1; dd <= CONSTANT.DAYS_IN_MONTH[mm]; dd++) {
         let level = Level.Didnt;
         if (cmpPair(mm, dd, currentMonth, currentDate) > 0) {
           level = Level.FutureDate;
@@ -118,12 +120,27 @@ Page({
     });
   },
 
-  onLoad: function(options) {
-    this.loadRecords()
+  refreshData: function() {
+    return this.loadRecords()
       .then(() => this.createStars());
+  },
+
+  onLoad: function(options) {
+    this.refreshData()
+      .catch(() => util.showToast(TOAST.STAT_PULLDOWN_REFRESH_ERROR));
   },
 
   onShow: function() {
 
+  },
+
+  onPullDownRefresh: function() {
+    this.refreshData()
+      .then(() => util.stopPullDownRefresh())
+      .then(() => util.showToast(TOAST.STAT_PULLDOWN_REFRESH_SUCCESS))
+      .catch(() => {
+        util.stopPullDownRefresh()
+          .then(() => util.showToast(TOAST.STAT_PULLDOWN_REFRESH_ERROR));
+      });
   }
 })

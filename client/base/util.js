@@ -8,6 +8,8 @@ const chooseLocation = promisify(wx.chooseLocation);
 const chooseImage = promisify(wx.chooseImage);
 const showToast = promisify(wx.showToast);
 const hideToast = promisify(wx.hideToast);
+const startPullDownRefresh = promisify(wx.startPullDownRefresh);
+const stopPullDownRefresh = promisify(wx.stopPullDownRefresh);
 
 function mustHaveAuth(scope) {
   return getSetting()
@@ -68,6 +70,8 @@ export default {
   chooseImage,
   showToast,
   hideToast,
+  startPullDownRefresh,
+  stopPullDownRefresh,
 
   // helper functions
   mustHaveAuth,
