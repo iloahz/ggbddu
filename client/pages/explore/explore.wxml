@@ -1,2 +1,7 @@
-<!--client/pages/explore/explore.wxml-->
-<text>client/pages/explore/explore.wxml</text>
+<view class="container">
+  <map scale='11' 
+             latitude='39.908823'
+             longitude='116.39747'
+             circles='{{circles}}'
+             ></map>
+</view>

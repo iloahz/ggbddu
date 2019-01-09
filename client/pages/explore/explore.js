@@ -1,65 +1,53 @@
-// client/pages/explore/explore.js
+
+const INIT_LATITUDE = 39.908823;
+const INIT_LONGITUDE = 116.39747;
+
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    circles: []
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
-
+    const circles = [];
+    for (let i = 0;i < 1000;i++) {
+      const circle = {
+        latitude: INIT_LATITUDE + Math.random() * 0.4 - 0.2,
+        longitude: INIT_LONGITUDE + Math.random() * 0.5 - 0.25,
+        fillColor: '#EE7077',
+        radius: 500
+      };
+      circles.push(circle);
+    }
+    this.setData({
+      circles: circles
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
   onReady: function () {
 
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow: function () {
 
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
   onHide: function () {
 
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
   onUnload: function () {
 
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
   onPullDownRefresh: function () {
 
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
   onReachBottom: function () {
 
   },
 
-  /**
-   * 用户点击右上角分享
-   */
   onShareAppMessage: function () {
 
   }
