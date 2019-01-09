@@ -105,6 +105,10 @@ Page({
         const star = {
           cssClass: LevelCssClass[level],
         };
+        if (cmpPair(mm, dd, currentMonth, currentDate) == 0) {
+          star.isToday = true;
+          star.dateText = currentDate;
+        }
         month.stars.push(star);
       }
       months.push(month);

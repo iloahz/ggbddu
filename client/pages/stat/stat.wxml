@@ -12,7 +12,9 @@
         </view>
         <view class="stars-container">
           <view class="star-container" wx:for="{{item.stars}}" wx:key="{{index}}">
-            <view class="star {{item.cssClass}}"></view>
+            <view class="star {{item.cssClass}}">
+              <view class="today-text" wx:if="{{item.isToday}}">{{item.dateText}}</view>
+            </view>
           </view>
         </view>
       </view>
