@@ -5,8 +5,10 @@
     </view>
   </view>
   <view class="content-container">
-    <view class="months-container">
-      <view class="month-container" wx:for="{{months}}" wx:key="{{index}}">
+    <scroll-view class="months-container"
+                 scroll-y="true"
+                 scroll-into-view="{{currentMonthId}}">
+      <view id="{{item.id}}" class="month-container" wx:for="{{months}}" wx:key="{{index}}">
         <view class="month-name-container">
           <view class="month-name">{{item.name}}</view>
         </view>
@@ -18,6 +20,6 @@
           </view>
         </view>
       </view>
-    </view>
+    </scroll-view>
   </view>
 </view>

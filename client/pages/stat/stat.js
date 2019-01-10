@@ -51,19 +51,12 @@ Page({
 
   data: {
     dayNames: CONSTANT.DAY_NAME,
-    months: []
+    months: [],
+
+    currentMonthId: ''
   },
 
-  stat: [],
-
-  loadRecords: function() {
-    return db.getStatOfCurrentYear()
-      .then(stat => {
-        this.stat = stat;
-      });
-  },
-
-  createStars: function() {
+  createStars: function(stat) {
     const d = new Date();
     const currentYear = d.getFullYear();
     const currentMonth = d.getMonth();
@@ -73,6 +66,7 @@ Page({
     for (let mm = 0; mm < 12; mm++) {
       const month = {
         name: CONSTANT.MONTH_NAME[mm],
+        id: `month-${mm}`,
         stars: []
       };
       const monthFirstDay = new Date(currentYear, mm, 1).getDay();
@@ -87,16 +81,16 @@ Page({
           level = Level.FutureDate;
         } else {
           // check the stat
-          if (nextRecordIndex >= this.stat.length) {
+          if (nextRecordIndex >= stat.length) {
             level = Level.Didnt;
           } else {
-            let nextRecordDate = this.stat[nextRecordIndex].datetime;
+            let nextRecordDate = stat[nextRecordIndex].datetime;
             while (cmpPair(mm, dd, nextRecordDate.getMonth(), nextRecordDate.getDate()) > 0) {
               nextRecordIndex += 1;
-              if (nextRecordIndex >= this.stat.length) break;
-              nextRecordDate = this.stat[nextRecordIndex].datetime;
+              if (nextRecordIndex >= stat.length) break;
+              nextRecordDate = stat[nextRecordIndex].datetime;
             }
-            if (nextRecordIndex < this.stat.length) {
+            if (nextRecordIndex < stat.length) {
               if (cmpPair(mm, dd, nextRecordDate.getMonth(), nextRecordDate.getDate()) == 0) {
                 level = datetimeToLevel(nextRecordDate);
                 nextRecordIndex += 1;
@@ -116,16 +110,30 @@ Page({
       months.push(month);
     }
     this.setData({
-      months: months
+      months: months,
+      currentMonthId: `month-${currentMonth}`
     });
   },
 
+  filterTooFrequentRefresh: function() {
+    const t = Date.now();
+    if (t - this.lastRefreshedTime < 1000) {
+      console.log('skip');
+      return Promise.reject('should omit this refresh request');
+    }
+    return Promise.resolve();
+  },
+
   refreshData: function() {
-    return this.loadRecords()
-      .then(() => this.createStars());
+    return db.getStatOfCurrentYear()
+      .then(stat => this.createStars(stat))
+      .catch(() => undefined);
   },
 
   onLoad: function(options) {
+    // for initial load, only show toast for errors.
+    // this is different from pulldown refresh, which 
+    // show toast for both success and errors.
     this.refreshData()
       .catch(() => util.showToast(TOAST.STAT_PULLDOWN_REFRESH_ERROR));
   },
