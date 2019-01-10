@@ -77,6 +77,8 @@ Page({
       }
       for (let dd = 1; dd <= CONSTANT.DAYS_IN_MONTH[mm]; dd++) {
         let level = Level.Didnt;
+        let hasPhoto = false;
+        let hasLocation = false;
         if (cmpPair(mm, dd, currentMonth, currentDate) > 0) {
           level = Level.FutureDate;
         } else {
@@ -92,14 +94,19 @@ Page({
             }
             if (nextRecordIndex < stat.length) {
               if (cmpPair(mm, dd, nextRecordDate.getMonth(), nextRecordDate.getDate()) == 0) {
-                level = datetimeToLevel(nextRecordDate);
+                const matchedRecord = stat[nextRecordIndex];
                 nextRecordIndex += 1;
+                level = datetimeToLevel(matchedRecord.datetime);
+                hasPhoto = matchedRecord.hasPhoto;
+                hasLocation = matchedRecord.hasLocation;
               }
             }
           }
         }
         const star = {
           cssClass: LevelCssClass[level],
+          hasPhoto: hasPhoto,
+          hasLocation: hasLocation
         };
         if (cmpPair(mm, dd, currentMonth, currentDate) == 0) {
           star.isToday = true;
@@ -113,15 +120,6 @@ Page({
       months: months,
       currentMonthId: `month-${currentMonth}`
     });
-  },
-
-  filterTooFrequentRefresh: function() {
-    const t = Date.now();
-    if (t - this.lastRefreshedTime < 1000) {
-      console.log('skip');
-      return Promise.reject('should omit this refresh request');
-    }
-    return Promise.resolve();
   },
 
   refreshData: function() {
