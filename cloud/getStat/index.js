@@ -34,8 +34,12 @@ exports.main = async (event, context) => {
       .limit(LIMIT_MAX)
       .get();
     stats = stats
-      .concat(chunk.data.map(record => { 
-        return { datetime: record.datetime };
+      .concat(chunk.data.map(record => {
+        return {
+          datetime: record.datetime,
+          hasPhoto: !!record.photo,
+          hasLocation: !!record.location
+        };
       }));
     if (chunk.data.length < LIMIT_MAX) break;
     currentOffset += chunk.data.length;

@@ -26,9 +26,9 @@ function getStatOfCurrentYear() {
   })
     .then(result => {
       return result['result'].map(record => {
-        return {
+        return Object.assign(record, {
           datetime: new Date(record.datetime)
-        }
+        });
       });
     })
     .catch(console.log);
