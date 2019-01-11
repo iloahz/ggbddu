@@ -113,13 +113,13 @@ page {
 .photo-marker {
   width: 100%;
   height: 100%;
-  background-color: #4FB99F;
+  background-color: #ff8787;
 }
 
 .location-marker {
   width: 100%;
   height: 100%;
-  background-color: #F2C975;
+  background-color: #4dabf7;
 }
 
 .star.empty {
@@ -135,7 +135,7 @@ page {
 }
 
 .star.pretty-early {
-  background: #FACEC8;
+  background: #ebfbee;
 }
 
 .star.pretty-early .today-text {
@@ -143,19 +143,19 @@ page {
 }
 
 .star.early {
-  background: #FFA398;
+  background: #b2f2bb;
 }
 
 .star.normal {
-  background: #EE7077;
+  background: #69db7c;
 }
 
 .star.late {
-  background: #DE2C2B;
+  background: #40c057;
 }
 
 .star.pretty-late {
-  background: #99130A;
+  background: #2f9e44;
 }
 
 .star.future-date {
