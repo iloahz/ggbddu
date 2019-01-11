@@ -106,11 +106,11 @@ Page({
         const star = {
           cssClass: LevelCssClass[level],
           hasPhoto: hasPhoto,
-          hasLocation: hasLocation
+          hasLocation: hasLocation,
+          dateText: dd
         };
         if (cmpPair(mm, dd, currentMonth, currentDate) == 0) {
           star.isToday = true;
-          star.dateText = currentDate;
         }
         month.stars.push(star);
       }

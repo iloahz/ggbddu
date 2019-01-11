@@ -15,7 +15,7 @@
         <view class="stars-container">
           <view class="star-container" wx:for="{{item.stars}}" wx:key="{{index}}">
             <view class="star {{item.cssClass}}">
-              <view class="today-text" wx:if="{{item.isToday}}">{{item.dateText}}</view>
+              <view class="star-text {{item.isToday ? 'is-today' : ''}}">{{item.dateText}}</view>
               <view class="markers-container" wx:if="{{item.hasPhoto || item.hasLocation}}">
                 <view class="photo-marker" wx:if="{{item.hasPhoto}}"></view>
                 <view class="location-marker" wx:if="{{item.hasLocation}}"></view>
