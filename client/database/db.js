@@ -30,8 +30,7 @@ function getStatOfCurrentYear() {
           datetime: new Date(record.datetime)
         });
       });
-    })
-    .catch(console.log);
+    });
 }
 
 /**
@@ -43,10 +42,7 @@ function getStatOfCurrentYear() {
  * @param {string} locationName
  */
 function addOrUpdateRecord(datetime, note, photo, longitude, latitude, locationName) {
-  const yyyy = datetime.getFullYear();
-  const mm = String(datetime.getMonth() + 1).padStart(2, '0');
-  const dd = String(datetime.getDate()).padStart(2, '0');
-  const dateString = `${yyyy}-${mm}-${dd}`;
+  const dateString = util.getDateString(datetime);
   const data = {
     data: {
       datetime: datetime,
@@ -70,8 +66,28 @@ function addOrUpdateRecord(datetime, note, photo, longitude, latitude, locationN
     });
 }
 
+function getHeatMapStat(region) {
+  // return Promise.resolve([]);
+  const dateString = util.getDateString();
+  return wx.cloud.callFunction({
+    name: 'getHeatMapStat',
+    data: {
+      'region': region,
+      'dateString': dateString
+    }
+  })
+    .then(result => {
+      return result['result'].map(record => {
+        return Object.assign(record, {
+          datetime: new Date(record.datetime)
+        });
+      });
+    });
+}
+
 export default {
   getRecords,
   addOrUpdateRecord,
-  getStatOfCurrentYear
+  getStatOfCurrentYear,
+  getHeatMapStat
 };

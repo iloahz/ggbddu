@@ -1,7 +1,13 @@
 <view class="container">
-  <map scale='11' 
-             latitude='39.908823'
-             longitude='116.39747'
-             circles='{{circles}}'
-             ></map>
+  <view class="rank-container">
+    <view class="rank">你是今天第{{}}位记录早饭的人</view>
+  </view>
+  <view class="city-heat-container">
+    <view class="hint-text">热力图</view>
+    <view class="map-container">
+      <map id="city-heat-map"
+           latitude='39.908823' longitude='116.39747' scale='11'></map>
+      <canvas id="city-heat-canvas" canvas-id="city-heat-canvas"></canvas>
+    </view>
+  </view>
 </view>

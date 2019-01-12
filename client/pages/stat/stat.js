@@ -1,19 +1,9 @@
 import CONSTANT from '../../constant/constant.js';
 import TOAST from '../../constant/toast.js';
+import LEVEL from '../../constant/level.js';
 import util from '../../base/util.js';
 import db from '../../database/db.js';
-
-const Level = {
-  Didnt: 0,
-
-  PrettyEarly: 1, // [*,    7:30)
-  Early: 2,       // [7:30, 8:00)
-  Normal: 3,      // [8:00, 9:00)
-  Late: 4,        // [9:00, 9:30)
-  PrettyLate: 5,  // [9:30, *]
-
-  FutureDate: 6
-};
+import functions from '../../base/functions.js';
 
 const LevelCssClass = [
   'didnt',
@@ -25,28 +15,6 @@ const LevelCssClass = [
   'future-date'
 ];
 
-const EmptyStar = {
-  cssClass: 'empty'
-};
-
-function cmpPair(x1, y1, x2, y2) {
-  if (x1 < x2) return -1;
-  else if (x1 > x2) return 1;
-  else if (y1 < y2) return -1;
-  else if (y1 > y2) return 1;
-  else return 0;
-}
-
-function datetimeToLevel(datetime) {
-  const hour = datetime.getHours();
-  const minute = datetime.getMinutes();
-  if (cmpPair(hour, minute, 7, 30) < 0) return Level.PrettyEarly;
-  else if (cmpPair(hour, minute, 8, 0) < 0) return Level.Early;
-  else if (cmpPair(hour, minute, 9, 0) < 0) return Level.Normal;
-  else if (cmpPair(hour, minute, 9, 30) < 0) return Level.Late;
-  else return Level.PrettyLate;
-}
-
 Page({
 
   data: {
@@ -57,6 +25,7 @@ Page({
   },
 
   createStars: function(stat) {
+    console.log(stat);
     const d = new Date();
     const currentYear = d.getFullYear();
     const currentMonth = d.getMonth();
@@ -72,36 +41,32 @@ Page({
       const monthFirstDay = new Date(currentYear, mm, 1).getDay();
       let currentDay = 1;
       while (currentDay != monthFirstDay) {
-        month.stars.push(EmptyStar);
+        month.stars.push({
+          cssClass: 'empty'
+        });
         currentDay = currentDay < 6 ? currentDay + 1 : 0;
       }
       for (let dd = 1; dd <= CONSTANT.DAYS_IN_MONTH[mm]; dd++) {
-        let level = Level.Didnt;
+        if (util.cmpPair(mm, dd, currentMonth, currentDate) > 0) {
+          month.stars.push({
+            cssClass: 'future-date',
+            dateText: dd
+          });
+          continue;
+        }
+        let level = LEVEL.Didnt;
         let hasPhoto = false;
         let hasLocation = false;
-        if (cmpPair(mm, dd, currentMonth, currentDate) > 0) {
-          level = Level.FutureDate;
-        } else {
-          // check the stat
-          if (nextRecordIndex >= stat.length) {
-            level = Level.Didnt;
-          } else {
-            let nextRecordDate = stat[nextRecordIndex].datetime;
-            while (cmpPair(mm, dd, nextRecordDate.getMonth(), nextRecordDate.getDate()) > 0) {
-              nextRecordIndex += 1;
-              if (nextRecordIndex >= stat.length) break;
-              nextRecordDate = stat[nextRecordIndex].datetime;
-            }
-            if (nextRecordIndex < stat.length) {
-              if (cmpPair(mm, dd, nextRecordDate.getMonth(), nextRecordDate.getDate()) == 0) {
-                const matchedRecord = stat[nextRecordIndex];
-                nextRecordIndex += 1;
-                level = datetimeToLevel(matchedRecord.datetime);
-                hasPhoto = matchedRecord.hasPhoto;
-                hasLocation = matchedRecord.hasLocation;
-              }
-            }
+        while (nextRecordIndex < stat.length) {
+          const nextRecord = stat[nextRecordIndex];
+          const cmpResult = util.cmpPair(mm, dd, nextRecord.datetime.getMonth(), nextRecord.datetime.getDate());
+          if (cmpResult < 0) break;
+          if (cmpResult == 0) {
+            level = util.datetimeToLevel(nextRecord.datetime);
+            hasPhoto = nextRecord.hasPhoto;
+            hasLocation = nextRecord.hasLocation;
           }
+          nextRecordIndex += 1;
         }
         const star = {
           cssClass: LevelCssClass[level],
@@ -109,7 +74,7 @@ Page({
           hasLocation: hasLocation,
           dateText: dd
         };
-        if (cmpPair(mm, dd, currentMonth, currentDate) == 0) {
+        if (util.cmpPair(mm, dd, currentMonth, currentDate) == 0) {
           star.isToday = true;
         }
         month.stars.push(star);
@@ -124,8 +89,7 @@ Page({
 
   refreshData: function() {
     return db.getStatOfCurrentYear()
-      .then(stat => this.createStars(stat))
-      .catch(() => undefined);
+      .then(stat => this.createStars(stat));
   },
 
   onLoad: function(options) {

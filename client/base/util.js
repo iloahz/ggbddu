@@ -1,5 +1,6 @@
 import promisify from './promisify.js';
 import gg from './gg.js';
+import LEVEL from '../constant/level.js';
 
 const authorize = promisify(wx.authorize);
 const getSetting = promisify(wx.getSetting);
@@ -10,6 +11,25 @@ const showToast = promisify(wx.showToast);
 const hideToast = promisify(wx.hideToast);
 const startPullDownRefresh = promisify(wx.startPullDownRefresh);
 const stopPullDownRefresh = promisify(wx.stopPullDownRefresh);
+const getRegion = (mapContext, ...args) => promisify(mapContext.getRegion)(...args);
+
+function cmpPair(x1, y1, x2, y2) {
+  if (x1 < x2) return -1;
+  else if (x1 > x2) return 1;
+  else if (y1 < y2) return -1;
+  else if (y1 > y2) return 1;
+  else return 0;
+}
+
+function datetimeToLevel(datetime) {
+  const hour = datetime.getHours();
+  const minute = datetime.getMinutes();
+  if (cmpPair(hour, minute, 7, 30) < 0) return LEVEL.PrettyEarly;
+  else if (cmpPair(hour, minute, 8, 0) < 0) return LEVEL.Early;
+  else if (cmpPair(hour, minute, 9, 0) < 0) return LEVEL.Normal;
+  else if (cmpPair(hour, minute, 9, 30) < 0) return LEVEL.Late;
+  else return LEVEL.PrettyLate;
+}
 
 function mustHaveAuth(scope) {
   return getSetting()
@@ -62,6 +82,15 @@ function timeout(ms) {
   });
 }
 
+function getDateString(datetime) {
+  datetime = datetime || new Date();
+  const yyyy = datetime.getFullYear();
+  const mm = String(datetime.getMonth() + 1).padStart(2, '0');
+  const dd = String(datetime.getDate()).padStart(2, '0');
+  const dateString = `${yyyy}-${mm}-${dd}`;
+  return dateString;
+}
+
 export default {
   // wrappers for wx. functions
   getUserInfo,
@@ -72,10 +101,14 @@ export default {
   hideToast,
   startPullDownRefresh,
   stopPullDownRefresh,
+  getRegion,
 
   // helper functions
   mustHaveAuth,
   checkAuth,
   getOpenId,
-  timeout
+  timeout,
+  getDateString,
+  cmpPair,
+  datetimeToLevel
 };
