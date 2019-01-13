@@ -17,9 +17,10 @@ Page({
 
   data: {
     longitude: INIT_LONGITUDE,
-    latitude: INIT_LATITUDE
+    latitude: INIT_LATITUDE,
+    rank: 0
   },
-
+ 
   mapContext: null,
   canvasContext: null,
   region: null,
@@ -33,6 +34,40 @@ Page({
   updateHeatMapTimeoutId: 0,
 
   onLoad: function (options) {
+    db.getExploreInfo()
+      .then(info => {
+        return this.showRankAnimation(info.rank);
+      })
+      .catch(console.log);
+  },
+
+  showRankAnimation: function(rank) {
+    const duration = 666;
+    const step = 16;
+    const start = rank > 6666 ? rank - 6666 : rank + 6666;
+    const ts = Date.now();
+    const timerId = setInterval(() => {
+      const cur = Date.now();
+      if (cur - ts + step > duration) {
+        this.setData({
+          rank: rank
+        });
+        clearInterval(timerId);
+      } else {
+        const val = start + Math.floor((cur - ts) * (rank - start) / duration);
+        this.setData({
+          rank: val
+        });
+      }
+    }, step);
+  },
+
+  onShow: function() {
+    this.scheduleNextUpdateStat();
+  },
+
+  onHide: function () {
+    this.stopUpdatingStat();
   },
 
   onReady: function () {
@@ -46,8 +81,7 @@ Page({
       .then(() => {
         this.mapContext.moveToLocation();
         return this.updateHeatMap();
-      })
-      .then(() => this.scheduleNextUpdateStat());
+      });
   },
 
   scheduleNextUpdateStat: function() {

@@ -1,6 +1,12 @@
 <view class="container">
   <view class="rank-container">
-    <view class="rank">你是今天第{{}}位记录早饭的人</view>
+    <view class="updating-rank" wx:if="{{rank == 0}}">正在查询你的排名...</view>
+    <view class="record-hint" wx:elif="{{rank < 0}}">没有找到你的排名，请记录后再来查看自己排名吧</view>
+    <view class="rank" wx:else>
+      <view class="rank-text">你是今天第</view>
+      <view class="rank-number">{{rank}}</view>
+      <view class="rank-text">位记录早饭的人</view>
+    </view>
   </view>
   <view class="city-heat-container">
     <view class="hint-text">热力图</view>

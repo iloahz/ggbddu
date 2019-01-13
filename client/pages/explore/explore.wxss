@@ -11,7 +11,24 @@ page {
 }
 
 .rank-container {
-  height: 60px;
+  display: flex;
+  align-items: center;
+  height: 99px;
+}
+
+.rank-text {
+  display: inline-block;
+}
+
+.rank-number {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 66px;
+  color: #364fc7;
+  font-weight: bold;
+  font-size: 1.2em;
+  border-bottom: 1px solid black;
 }
 
 .city-heat-container {

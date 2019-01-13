@@ -66,6 +66,19 @@ function addOrUpdateRecord(datetime, note, photo, longitude, latitude, locationN
     });
 }
 
+function getExploreInfo() {
+  const dateString = util.getDateString();
+  return wx.cloud.callFunction({
+    name: 'getExploreInfo',
+    data: {
+      'dateString': dateString
+    }
+  })
+    .then(result => {
+      return result['result'];
+    });
+}
+
 function getHeatMapStat(region) {
   const dateString = util.getDateString();
   return wx.cloud.callFunction({
@@ -88,5 +101,6 @@ export default {
   getRecords,
   addOrUpdateRecord,
   getStatOfCurrentYear,
+  getExploreInfo,
   getHeatMapStat
 };

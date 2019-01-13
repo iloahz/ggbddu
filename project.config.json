@@ -11,7 +11,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.4.3",
+	"libVersion": "2.5.0",
 	"appid": "wx9cf940f9503da559",
 	"projectname": "好好早饭",
 	"debugOptions": {
