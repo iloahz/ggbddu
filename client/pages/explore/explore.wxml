@@ -6,7 +6,11 @@
     <view class="hint-text">热力图</view>
     <view class="map-container">
       <map id="city-heat-map"
-           latitude='39.908823' longitude='116.39747' scale='11'></map>
+           longitude="{{longitude}}"
+           latitude="{{latitude}}"
+           scale="11"
+           show-location="true"
+           bindregionchange="onMapRegionChange"></map>
       <canvas id="city-heat-canvas" canvas-id="city-heat-canvas"></canvas>
     </view>
   </view>

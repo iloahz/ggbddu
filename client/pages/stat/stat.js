@@ -25,7 +25,6 @@ Page({
   },
 
   createStars: function(stat) {
-    console.log(stat);
     const d = new Date();
     const currentYear = d.getFullYear();
     const currentMonth = d.getMonth();

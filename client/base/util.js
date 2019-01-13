@@ -1,5 +1,6 @@
 import promisify from './promisify.js';
 import gg from './gg.js';
+import functions from './functions.js';
 import LEVEL from '../constant/level.js';
 
 const authorize = promisify(wx.authorize);
@@ -110,5 +111,8 @@ export default {
   timeout,
   getDateString,
   cmpPair,
-  datetimeToLevel
+  datetimeToLevel,
+
+  // functions
+  logAndThen: functions.logAndThen
 };

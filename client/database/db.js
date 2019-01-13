@@ -67,7 +67,6 @@ function addOrUpdateRecord(datetime, note, photo, longitude, latitude, locationN
 }
 
 function getHeatMapStat(region) {
-  // return Promise.resolve([]);
   const dateString = util.getDateString();
   return wx.cloud.callFunction({
     name: 'getHeatMapStat',
