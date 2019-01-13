@@ -30,6 +30,7 @@ Page({
   isUpdatingRegion: false,
   lastDrawRegion: null,
   lastDrawIndex: 0,
+  updateHeatMapTimeoutId: 0,
 
   onLoad: function (options) {
   },
@@ -45,7 +46,25 @@ Page({
       .then(() => {
         this.mapContext.moveToLocation();
         return this.updateHeatMap();
-      });
+      })
+      .then(() => this.scheduleNextUpdateStat());
+  },
+
+  scheduleNextUpdateStat: function() {
+    if (!this.updateHeatMapTimeoutId) {
+      this.updateHeatMapTimeoutId = setTimeout(() => {
+        this.updateHeatMapTimeoutId = 0;
+        this.updateHeatMap()
+          .then(() => this.scheduleNextUpdateStat());
+      }, 5000);
+    }
+  },
+
+  stopUpdatingStat: function() {
+    if (this.updateHeatMapTimeoutId) {
+      clearTimeout(this.updateHeatMapTimeoutId);
+      this.updateHeatMapTimeoutId = 0;
+    }
   },
 
   getCanvasSize: function() {
