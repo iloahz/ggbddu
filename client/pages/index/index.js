@@ -141,7 +141,7 @@ Page({
       .then(() => util.showToast(TOAST.UPLOADING_RECORD))
       .then(() => this.uploadRecord())
       .then(() => util.showToast(TOAST.UPLOAD_SUCCESS))
-      .then(() => util.timeout(TOAST.UPLOAD_SUCCESS.duration))
+      .then(() => util.delay(TOAST.UPLOAD_SUCCESS.duration))
       .then(() => wx.switchTab({ url: '/pages/stat/stat' }))
       .catch(e => {
         console.log(e);

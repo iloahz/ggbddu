@@ -77,7 +77,7 @@ function getOpenId() {
     });
 }
 
-function timeout(ms) {
+function delay(ms) {
   return new Promise(resolve => {
     setTimeout(resolve, ms);
   });
@@ -108,7 +108,7 @@ export default {
   mustHaveAuth,
   checkAuth,
   getOpenId,
-  timeout,
+  delay,
   getDateString,
   cmpPair,
   datetimeToLevel,

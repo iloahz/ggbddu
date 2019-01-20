@@ -77,7 +77,7 @@ Page({
     // delay 1 second to make map works correctly for:
     // * moveToLocation actually takes effect
     // * getRegion can return correct value
-    util.timeout(1000)
+    util.delay(1000)
       .then(() => {
         this.mapContext.moveToLocation();
         return this.updateHeatMap();
