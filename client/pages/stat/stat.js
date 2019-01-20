@@ -102,8 +102,12 @@ Page({
       .catch(() => util.showToast(TOAST.STAT_PULLDOWN_REFRESH_ERROR));
   },
 
-  onShow: function() {
-
+  onShow: function (e) {
+    // TODO: duplicate refresh with onLoad when first load this page.
+    // But needed when switch from index page, will fix this when
+    // implement local global data.
+    this.refreshData()
+      .catch(() => util.showToast(TOAST.STAT_PULLDOWN_REFRESH_ERROR));
   },
 
   onPullDownRefresh: function() {
