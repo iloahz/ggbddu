@@ -23,6 +23,7 @@ Page({
 
   datetime: null,
   cloudPhotoUrl: '',
+  noteText: '',
 
   /**
    * Lifecycle function--Called when page load
@@ -59,6 +60,10 @@ Page({
       .then(result => {
       })
       .catch(console.log);
+  },
+
+  onNoteInput: function(e) {
+    this.noteText = e.detail.value;
   },
 
   onTapDatetime: function(e) {
@@ -121,7 +126,7 @@ Page({
   uploadRecord: function() {
     return db.addOrUpdateRecord(
       this.date,
-      '',
+      this.noteText,
       this.cloudPhotoUrl,
       this.data.locationLongitude,
       this.data.locationLatitude,

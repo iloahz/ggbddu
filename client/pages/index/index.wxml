@@ -1,7 +1,7 @@
 <view class="container">
   <view class="note-container">
     <view class="note">
-      <textarea class="note-textarea" placeholder='这一刻的想法...' placeholder-class='placeholder'>
+      <textarea class="note-textarea" placeholder='这一刻的想法...' placeholder-class='placeholder' bindinput="onNoteInput">
       </textarea>
     </view>
   </view>

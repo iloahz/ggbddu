@@ -54,6 +54,7 @@ Page({
           continue;
         }
         let level = LEVEL.Didnt;
+        let hasNote = false;
         let hasPhoto = false;
         let hasLocation = false;
         while (nextRecordIndex < stat.length) {
@@ -62,6 +63,7 @@ Page({
           if (cmpResult < 0) break;
           if (cmpResult == 0) {
             level = util.datetimeToLevel(nextRecord.datetime);
+            hasNote = nextRecord.hasNote;
             hasPhoto = nextRecord.hasPhoto;
             hasLocation = nextRecord.hasLocation;
           }
@@ -69,6 +71,7 @@ Page({
         }
         const star = {
           cssClass: LevelCssClass[level],
+          hasNote: hasNote,
           hasPhoto: hasPhoto,
           hasLocation: hasLocation,
           dateText: dd

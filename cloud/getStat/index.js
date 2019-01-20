@@ -37,6 +37,7 @@ exports.main = async (event, context) => {
       .concat(chunk.data.map(record => {
         return {
           datetime: record.datetime,
+          hasNote: !!record.note,
           hasPhoto: !!record.photo,
           hasLocation: !!record.location
         };
