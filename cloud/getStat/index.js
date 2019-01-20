@@ -13,12 +13,15 @@ const _ = db.command;
  * The result must be sorted.
  */
 exports.main = async (event, context) => {
+  console.log('event:', event);
   const wxContext = cloud.getWXContext();
   const openId = wxContext.OPENID;
   const year = event.year;
   // due to timezone issue, extend 1 day at beginning and end.
   const datetimeMin = new Date(year - 1, 11, 31, 0, 0, 0, 0);
   const datetimeMax = new Date(year + 1, 0, 1, 23, 59, 59, 999);
+  console.log('datetimeMin:', datetimeMin);
+  console.log('datetimeMax:', datetimeMax);
   const query = {
     _openid: openId,
     datetime: _.gte(datetimeMin).and(_.lte(datetimeMax))
