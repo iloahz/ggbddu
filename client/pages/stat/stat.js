@@ -1,9 +1,11 @@
 import CONSTANT from '../../constant/constant.js';
 import TOAST from '../../constant/toast.js';
 import LEVEL from '../../constant/level.js';
+
 import util from '../../base/util.js';
 import db from '../../database/db.js';
 import functions from '../../base/functions.js';
+import gg from '../../base/gg.js';
 
 const LevelCssClass = [
   'didnt',
@@ -103,11 +105,10 @@ Page({
   },
 
   onShow: function (e) {
-    // TODO: duplicate refresh with onLoad when first load this page.
-    // But needed when switch from index page, will fix this when
-    // implement local global data.
-    this.refreshData()
-      .catch(() => util.showToast(TOAST.STAT_PULLDOWN_REFRESH_ERROR));
+    if (gg.lastRecordTime > gg.lastStatUpdateTime) {
+      this.refreshData()
+        .catch(() => util.showToast(TOAST.STAT_PULLDOWN_REFRESH_ERROR));
+    }
   },
 
   onPullDownRefresh: function() {

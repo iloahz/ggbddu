@@ -1,15 +1,13 @@
+import TOAST from '../../constant/toast.js';
+
 import util from '../../base/util.js';
 import db from '../../database/db.js';
-import TOAST from '../../constant/toast.js';
 
 const INIT_LATITUDE = 39.908823;
 const INIT_LONGITUDE = 116.39747;
 
 Page({
 
-  /**
-   * Page initial data
-   */
   data: {
     hasUserInfoScope: false,
     datetimeText: '',
@@ -25,9 +23,6 @@ Page({
   cloudPhotoUrl: '',
   noteText: '',
 
-  /**
-   * Lifecycle function--Called when page load
-   */
   onLoad: function (options) {
     this.setDatetimeText();
     util.checkAuth('scope.userInfo')

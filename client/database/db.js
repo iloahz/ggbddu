@@ -1,4 +1,9 @@
+import { Event } from '../base/polyfill/index.js';
+import EventType from '../constant/eventtype.js';
+
 import util from '../base/util.js';
+import gg from '../base/gg.js';
+import radio from '../base/radio.js';
 
 const db = wx.cloud.database();
 const records = db.collection('records');
@@ -30,6 +35,14 @@ function getStatOfCurrentYear() {
           datetime: new Date(record.datetime)
         });
       });
+    })
+    .then(stat => {
+      radio.broadcast(new Event(EventType.GET_STAT_SUCCESS, {
+        detail: {
+          stat: stat
+        }
+      }));
+      return stat;
     });
 }
 
@@ -63,6 +76,13 @@ function addOrUpdateRecord(datetime, note, photo, longitude, latitude, locationN
     })
     .then(() => {
       return records.add(data);
+    })
+    .then(() => {
+      radio.broadcast(new Event(EventType.RECORD_UPLOAD_SUCCESS, {
+        detail: {
+          record: data.data
+        }
+      }));
     });
 }
 
