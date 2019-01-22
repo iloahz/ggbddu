@@ -1,7 +1,9 @@
 import TOAST from '../../constant/toast.js';
+import Record from '../../models/record.js';
 
 import util from '../../base/util.js';
 import db from '../../database/db.js';
+import gg from '../../base/gg.js';
 
 const INIT_LATITUDE = 39.908823;
 const INIT_LONGITUDE = 116.39747;
@@ -16,12 +18,13 @@ Page({
     locationLongitude: INIT_LONGITUDE,
     locationMarkers: [],
     locationText: '',
-    photoUrl: ''
+    photoUrl: '',
+    hasRecordedToday: false,
+    noteText: ''
   },
 
   datetime: null,
   cloudPhotoUrl: '',
-  noteText: '',
 
   onLoad: function (options) {
     this.setDatetimeText();
@@ -32,7 +35,43 @@ Page({
         });
       });
     this.setInitLocation();
-    util.getOpenId();
+    this.updateLastRecordFromGlobal();
+    this.getInitInfoFromCloud();
+  },
+
+  updateLastRecordFromGlobal: function() {
+    // TODO: don't update from global after user have interacted.
+    const record = gg.lastRecord;
+    const updateData = {
+      hasRecordedToday: record.dateString == util.getDateString()
+    };
+    if (updateData.hasRecordedToday) {
+      updateData.photoUrl = record.photo;
+      this.cloudPhotoUrl = record.photo;
+      updateData.noteText = this.data.noteText || record.note;
+      if (record.locationName) {
+        updateData.locationText = record.locationName;
+        updateData.locationLongitude = record.locationLongitude;
+        updateData.locationLatitude = record.locationLatitude;
+        updateData.locationMarkers = [{
+          id: 0,
+          longitude: updateData.locationLongitude,
+          latitude: updateData.locationLatitude,
+          iconPath: '/images/location_marker.png',
+          width: 36,
+          height: 36
+        }];
+      }
+    } else {
+      updateData.photoUrl = '';
+      this.cloudPhotoUrl = '';
+      updateData.noteText = '';
+      updateData.locationText = '';
+      updateData.locationLongitude = INIT_LONGITUDE;
+      updateData.locationLatitude = INIT_LATITUDE;
+      updateData.locationMarkers = [];
+    }
+    this.setData(updateData);
   },
 
   setDatetimeText: function() {
@@ -57,8 +96,15 @@ Page({
       .catch(console.log);
   },
 
+  getInitInfoFromCloud: function() {
+    return db.getInitInfo()
+      .then(() => this.updateLastRecordFromGlobal());
+  },
+
   onNoteInput: function(e) {
-    this.noteText = e.detail.value;
+    this.setData({
+      noteText: e.detail.value
+    });
   },
 
   onTapDatetime: function(e) {
@@ -92,10 +138,13 @@ Page({
         this.setData({
           photoUrl: result.tempFilePaths[0]
         });
+      })
+      .catch(() => {
+        // user cancels, just ignore.
       });
   },
 
-  getCloudPhotoPath: function() {
+  calcCloudPhotoPath: function() {
     return util.getOpenId()
       .then(openId => {
         const d = new Date();
@@ -106,7 +155,8 @@ Page({
 
   uploadPhotoIfExist: function() {
     if (!this.data.photoUrl) return Promise.resolve();
-    return this.getCloudPhotoPath()
+    if (this.data.photoUrl == gg.lastRecord.photo) return Promise.resolve();
+    return this.calcCloudPhotoPath()
       .then(cloudPhotoPath => {
         return wx.cloud.uploadFile({
           cloudPath: cloudPhotoPath,
@@ -119,14 +169,14 @@ Page({
   },
 
   uploadRecord: function() {
-    return db.addOrUpdateRecord(
+    return db.addOrUpdateRecord(Record.build(
       this.date,
-      this.noteText,
+      this.data.noteText,
       this.cloudPhotoUrl,
       this.data.locationLongitude,
       this.data.locationLatitude,
       this.data.locationText
-    );
+    ));
   },
 
   onTapSubmit: function(e) {
@@ -138,10 +188,22 @@ Page({
       .then(() => util.showToast(TOAST.UPLOAD_SUCCESS))
       .then(() => util.delay(TOAST.UPLOAD_SUCCESS.duration))
       .then(() => wx.switchTab({ url: '/pages/stat/stat' }))
+      .then(() => this.updateLastRecordFromGlobal())
       .catch(e => {
         console.log(e);
         util.showToast(TOAST.UPLOAD_ERROR)
       });
+  },
+
+  onTapDelete: function(e) {
+    util.showToast(TOAST.DELETING_RECORD)
+      .then(() => db.deleteRecord(gg.lastRecord.dateString))
+      .then(() => util.showToast(TOAST.DELETE_SUCCESS))
+      .then(() => util.delay(TOAST.DELETE_SUCCESS.duration))
+      .then(() => wx.switchTab({ url: '/pages/stat/stat' }))
+      .then(() => this.updateLastRecordFromGlobal())
+      .catch(util.logAndThrow)
+      .catch(() => util.showToast(TOAST.UPLOAD_ERROR));
   },
 
   onTapGetUserInfo: function(e) {

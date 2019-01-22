@@ -35,8 +35,31 @@ page {
 
 .commit-container {
   width: 100%;
-  height: 10%;
+  height: 42px;
   margin-top: 16px;
+  display: flex;
+}
+
+.commit-record,
+.update-record,
+.delete-record {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.commit-record {
+  width: 100%;
+}
+
+.update-record {
+  width: 66.6%;
+  margin-right: 8px;
+}
+
+.delete-record {
+  width: 33.3%;
+  margin-left: 8px;
 }
 
 .note {

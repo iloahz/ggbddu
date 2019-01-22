@@ -114,5 +114,6 @@ export default {
   datetimeToLevel,
 
   // functions
-  logAndThen: functions.logAndThen
+  logAndThen: functions.logAndThen,
+  logAndThrow: functions.logAndThrow
 };

@@ -1,7 +1,7 @@
 <view class="container">
   <view class="note-container">
     <view class="note">
-      <textarea class="note-textarea" placeholder='这一刻的想法...' placeholder-class='placeholder' bindinput="onNoteInput">
+      <textarea class="note-textarea" value="{{noteText}}" placeholder='这一刻的想法...' placeholder-class='placeholder' bindinput="onNoteInput">
       </textarea>
     </view>
   </view>
@@ -26,14 +26,22 @@
         <map bindtap='onTapLocation'
              latitude='{{locationLatitude}}'
              longitude='{{locationLongitude}}'
-             scale='16'
+             scale='{{locationText ? 16 : 10}}'
              markers='{{locationMarkers}}'></map>
       </view>
       <text class="location-text">{{locationText}}</text>
     </view>
   </view>
   <view class="commit-container">
-    <button wx:if='{{hasUserInfoScope}}' bindtap='onTapSubmit' type="primary">吃早饭咯~</button>
-    <button wx:else open-type='getUserInfo' bindgetuserinfo='onTapGetUserInfo' type="primary">吃早饭咯~</button>
+    <block wx:if="{{hasRecordedToday}}">
+      <button wx:if='{{hasUserInfoScope}}' class="update-record" bindtap='onTapSubmit' type="primary">更新记录</button>
+      <button wx:else class="update-record" open-type='getUserInfo' bindgetuserinfo='onTapGetUserInfo' type="primary">更新记录</button>
+      <button wx:if='{{hasUserInfoScope}}' class="delete-record" bindtap='onTapDelete' type="warn">删除记录</button>
+      <button wx:else class="delete-record" open-type='getUserInfo' bindgetuserinfo='onTapGetUserInfo' type="warn">删除记录</button>
+    </block>
+    <block wx:else>
+      <button wx:if='{{hasUserInfoScope}}' class="commit-record" bindtap='onTapSubmit' type="primary">吃早饭咯~</button>
+      <button wx:else class="commit-record" open-type='getUserInfo' bindgetuserinfo='onTapGetUserInfo' type="primary">吃早饭咯~</button>
+    </block>
   </view>
 </view>

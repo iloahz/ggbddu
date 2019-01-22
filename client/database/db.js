@@ -1,5 +1,6 @@
 import { Event } from '../base/polyfill/index.js';
 import EventType from '../constant/eventtype.js';
+import Record from '../models/record.js';
 
 import util from '../base/util.js';
 import gg from '../base/gg.js';
@@ -47,26 +48,11 @@ function getStatOfCurrentYear() {
 }
 
 /**
- * @param {Date} datetime
- * @param {string} note
- * @param {string} photo - cloud id of the photo
- * @param {number} longitude
- * @param {number} latitude
- * @param {string} locationName
+ * @param {Record} record
+ * @return {Promise<undefined>}
  */
-function addOrUpdateRecord(datetime, note, photo, longitude, latitude, locationName) {
-  const dateString = util.getDateString(datetime);
-  const data = {
-    data: {
-      datetime: datetime,
-      dateString: dateString,
-      note: note,
-      photo: photo,
-      location: locationName ? db.Geo.Point(longitude, latitude) : null,
-      locationName: locationName
-    }
-  };
-  return getRecords({ dateString })
+function addOrUpdateRecord(record) {
+  return getRecords({ dateString: record.dateString })
     .then(result => {
       if (result.length > 0) {
         // doc.set will lose timezone info, so use remove for now.
@@ -75,13 +61,26 @@ function addOrUpdateRecord(datetime, note, photo, longitude, latitude, locationN
       }
     })
     .then(() => {
-      return records.add(data);
+      return records.add(record.generateCloudPayload());
     })
     .then(() => {
       radio.broadcast(new Event(EventType.RECORD_UPLOAD_SUCCESS, {
-        detail: {
-          record: data.data
-        }
+        detail: { record }
+      }));
+    });
+}
+
+function deleteRecord(dateString) {
+  console.info('deleting record for:', dateString);
+  return getRecords({ dateString })
+    .then(result => {
+      if (result.length > 0 && result[0]['dateString'] == dateString) {
+        return records.doc(result[0]['_id']).remove();
+      }
+    })
+    .then(() => {
+      radio.broadcast(new Event(EventType.RECORD_DELETE_SUCCESS, {
+        detail: { dateString }
       }));
     });
 }
@@ -117,10 +116,31 @@ function getHeatMapStat(region) {
     });
 }
 
+
+function getInitInfo() {
+  console.info('db.getInitInfo');
+  return wx.cloud.callFunction({
+    name: 'getInitInfo',
+    data: {}
+  })
+    .then(result => {
+      console.info('db.getInitInfo result:', result);
+      const data = result['result'];
+      gg.openId = data['openid'];
+      radio.broadcast(new Event(EventType.RECORD_UPLOAD_SUCCESS, {
+        detail: {
+          record: Record.buildFromCloudPayload(data['lastRecord'])
+        }
+      }));
+    });
+}
+
 export default {
   getRecords,
   addOrUpdateRecord,
   getStatOfCurrentYear,
   getExploreInfo,
-  getHeatMapStat
+  getHeatMapStat,
+  deleteRecord,
+  getInitInfo
 };

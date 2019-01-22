@@ -1,3 +1,5 @@
+import Record from '../models/record.js';
+
 // GG stands for Ggbddu's Global object.
 // Try to make GG a pure data class, don't add any dependencies.
 // Let others depend on GG.
@@ -5,8 +7,8 @@ class GG {
   constructor() {
     this.userInfo = {};
     this.openId = '';
-    this.lastRecordDateString = '';
-    this.lastRecordTime = 0;
+    this.lastRecord = null;
+    this.lastRecordUpdateTime = 0;
     this.stat = [];
     this.lastStatUpdateTime = 0;
   }
@@ -16,8 +18,8 @@ class GG {
       'openId': this.openId,
       'stat': this.stat,
       'lastStatUpdateTime': this.lastStatUpdateTime,
-      'lastRecordDateString': this.lastRecordDateString,
-      'lastRecordTime': this.lastRecordTime
+      'lastRecord': this.lastRecord,
+      'lastRecordUpdateTime': this.lastRecordUpdateTime
     };
     return json;
   }
@@ -26,8 +28,8 @@ class GG {
     if (json.hasOwnProperty('openId')) this.openId = json['openId'];
     if (json.hasOwnProperty('stat')) this.stat = json['stat'];
     if (json.hasOwnProperty('lastStatUpdateTime')) this.lastStatUpdateTime = json['lastStatUpdateTime'];
-    if (json.hasOwnProperty('lastRecordDateString')) this.lastRecordDateString = json['lastRecordDateString'];
-    if (json.hasOwnProperty('lastRecordTime')) this.lastRecordTime = json['lastRecordTime'];
+    if (json.hasOwnProperty('lastRecord')) this.lastRecord = Record.buildFromJson(json['lastRecord']);
+    if (json.hasOwnProperty('lastRecordUpdateTime')) this.lastRecordUpdateTime = json['lastRecordUpdateTime'];
   }
 
   static getInstance() {
@@ -37,5 +39,8 @@ class GG {
     return GG.instance_;
   }
 }
+
+/** @type {Record} */
+GG.prototype.lastRecord = null;
 
 export default GG.getInstance();

@@ -18,10 +18,15 @@ function saveToLocalStorage() {
 }
 
 function onRecordUploadSuccess(event) {
-  console.log(event);
   const record = event.detail.record;
-  gg.lastRecordDateString = record.dateString;
-  gg.lastRecordTime = Date.now();
+  gg.lastRecord = record;
+  gg.lastRecordUpdateTime = Date.now();
+  saveToLocalStorage();
+}
+
+function onRecordDeleteSuccess(event) {
+  gg.lastRecord = {};
+  gg.lastRecordUpdateTime = Date.now();
   saveToLocalStorage();
 }
 
@@ -35,6 +40,7 @@ function onGetStatSuccess(event) {
 function init() {
   loadFromLocalStorage();
   radio.onBroadcast(EventType.RECORD_UPLOAD_SUCCESS, onRecordUploadSuccess);
+  radio.onBroadcast(EventType.RECORD_DELETE_SUCCESS, onRecordDeleteSuccess);
   radio.onBroadcast(EventType.GET_STAT_SUCCESS, onGetStatSuccess);
 }
 

@@ -105,7 +105,7 @@ Page({
   },
 
   onShow: function (e) {
-    if (gg.lastRecordTime > gg.lastStatUpdateTime) {
+    if (gg.lastRecordUpdateTime > gg.lastStatUpdateTime) {
       this.refreshData()
         .catch(() => util.showToast(TOAST.STAT_PULLDOWN_REFRESH_ERROR));
     }
